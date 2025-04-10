@@ -1,0 +1,26 @@
+{% extends 'base.html'%}
+
+
+{% block content%}
+
+
+<form class="form-inline my-2 my-lg-0" action ="{% url 'submitQuestion' %}" method = "POST"  >
+    {% csrf_token %}
+
+   <div class="card mx-auto" id  = 'mainCard'>
+    <div class="card-body mx-auto">
+    {{errors}}
+    <H5 class = "text-center">Billing Query Form</H5>
+    <table>
+
+        <tr><td>Question Type: </td><td><input class="form-control mr-sm-2" type="text" placeholder="Type"  name = 'questionType'></td></tr>
+        <tr><td>Question:<br>
+                  </td><td><textarea rows="4" cols="50" name = "questionContent" ></textarea></td></tr>
+
+        
+
+</table><br>
+  
+</div>
+<button class="btn btn-outline-success my-2 my-sm-0 ml-5 mr-5" type="submit">Save</button>
+</div>

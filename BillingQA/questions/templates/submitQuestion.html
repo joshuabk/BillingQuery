@@ -1,0 +1,111 @@
+{% extends 'base.html'%}
+
+
+{% block content%}
+
+
+<form class="form-inline my-2 my-lg-0" action ="{% url 'submitQuestion' %}" method = "POST"  >
+    {% csrf_token %}
+
+   <div class="card mx-auto" id  = 'mainCard'>
+    <div class="card-body mx-auto">
+    {{errors}}
+    <H5 class = "text-center">Billing Query Form</H5>
+    <table>
+
+        <tr><td>Question Type: </td><td><input class="form-control mr-sm-2" type="text" placeholder="Type"  name = 'questionType'></td></tr>
+        <tr><td>Question:<br>
+                  </td><td><textarea rows="4" cols="50" name = "questionContent" ></textarea></td></tr>
+
+        
+
+</table><br>
+  
+</div>
+<button class="btn btn-outline-success my-2 my-sm-0 ml-5 mr-5" type="submit">Save</button>
+</div>
+
+
+
+
+
+
+
+
+
+        <style>
+            #mainCard{
+                margin-bottom: 150px
+            }
+    
+            .help-icon {
+      font-size: 18px;
+      cursor: pointer;
+      color: #007bff;
+      margin-left: 10px;
+    }
+    
+    .help-icon:hover {
+      color: #0056b3;
+    }
+    
+    /* Popup styling */
+    .help-popup {
+      display: none;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+      width: 600px;
+      max-width: 90%;
+      z-index: 1000;
+    }
+    
+    .help-content {
+      text-align: left;
+    }
+    
+    .help-content h3 {
+      margin-top: 0;
+    }
+    
+    .help-content ul {
+      padding-left: 20px;
+    }
+    
+    .help-content li {
+      margin-bottom: 10px;
+    }
+    
+    /* Close button */
+    .close-btn {
+      float: right;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    
+    .close-btn:hover {
+      color: red;
+    }
+    
+    /* Background overlay */
+    .help-popup::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: -1;
+    }
+    
+        
+    </style>
+    
+    {%endblock%}

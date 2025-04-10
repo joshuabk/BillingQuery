@@ -1,0 +1,39 @@
+<title>Billing Questions</title>
+<style>
+  tr:nth-child(odd) {
+    background-color: #ffffff;
+  }
+
+</style>
+   
+ 
+
+   <td>{{question.id}}</td> 
+   
+  
+
+   <td>{{question.questionDate|date:'m/d/Y'}}</td>
+
+   <td>{{question.questionType}}</td>
+        
+       
+    <td><textarea rows="3" cols="20" readonly style="border: none">{{question.questionConent}}</textarea></td>
+
+    <td>
+      <form action="{% url 'showQuestion' question.pk %}" method="get" style="display:inline;">
+          {% csrf_token %}
+         <button class="show"  role="button"><i class="fas fa-file-invoice"></i></button>
+      </form></td>
+    <td>
+    <form action="{% url 'editQuestion' question.pk %}" method="get" style="display:inline;">
+        {% csrf_token %}
+       <button class="edit"  role="button"><i class="fa fa-edit"></i></button>
+    </form></td>
+    <td>
+    <form action="{% url 'deleteQuestion' question.pk %}" method="post" style="display:inline;">
+      {% csrf_token %}
+      <button class="delete"  onclick="return confirm('Are you sure you want to delete this entry?')" role="button"><i class="fa fa-trash"></i></button>
+  </form></td>
+   
+
+ 
