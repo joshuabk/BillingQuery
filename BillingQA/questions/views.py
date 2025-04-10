@@ -36,10 +36,11 @@ def submitQuestion(request):
             question = form.save()
 
 
-    orderBy = request.GET.get('order_by', 'questionDate')
-    questions = billingQuestion.objects.all().order_by(orderBy)
-    return render(request, 'submitQuestion.html', {'questions':questions})
-           
+         orderBy = request.GET.get('order_by', 'questionDate')
+         questions = billingQuestion.objects.all().order_by(orderBy)
+         return render(request, 'showQuestions.html', {'questions':questions})
+    else:
+        return render(request, 'submitQuestion.html')       
 
 def showQuestions(request):
     orderBy = request.GET.get('order_by', 'questionDate')
