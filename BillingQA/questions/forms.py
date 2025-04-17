@@ -7,7 +7,7 @@ class questionForm(forms.ModelForm):
 
     class Meta:
         model = billingQuestion
-        fields = [ "questionType", "questionContent"]
+        fields = [ "Title","Questioner", "Content"]
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -16,17 +16,16 @@ class answerForm(forms.ModelForm):
 
     class Meta:
         model = billingQuestion
-        fields = ["questionAnswer"]
+        fields = ["Content","Answer"]
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
 
 class editQuestionForm(forms.ModelForm):
-    
 
     class Meta:
         model = billingQuestion
-        fields= [ "questionType", "questionContent"]
+        fields= [ "Type", "Content", "Answer"]
     def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             

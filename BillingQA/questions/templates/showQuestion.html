@@ -1,26 +1,109 @@
 {% extends 'base.html'%}
 
 
+
 {% block content%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Incident Report</title>
+   
+    <style>
+        body {
+            padding-top: 3.5rem;
+        }
+    </style>
+</head>
+<body>
 
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Question {{question.id}}</a>
+    </div>
+</nav>
 
-<form class="form-inline my-2 my-lg-0" action ="{% url 'submitQuestion' %}" method = "POST"  >
-    {% csrf_token %}
-
-   <div class="card mx-auto" id  = 'mainCard'>
-    <div class="card-body mx-auto">
-    {{errors}}
-    <H5 class = "text-center">Billing Query Form</H5>
-    <table>
-
-        <tr><td>Question Type: </td><td><input class="form-control mr-sm-2" type="text" placeholder="Type"  name = 'questionType'></td></tr>
-        <tr><td>Question:<br>
-                  </td><td><textarea rows="4" cols="50" name = "questionContent" ></textarea></td></tr>
-
+<main class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="my-4">Billing Question</h1>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <!-- Incident Details -->
+                    <h5 class="card-title">Question Details</h5>
+                    <ul class="list-group list-group-flush">
+                        <!-- Use Bootstrap grid for label and value alignment -->
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-4"><strong>Question ID:</strong></div>
+                                <div class="col-md-8">{{ question.id }}</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-4"><strong>Questioner:</strong></div>
+                                <div class="col-md-8">{{ question.Questioner}}</div>
+                            </div>
+                        </li>
+                        
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-4"><strong>Qeusiton Date:</strong></div>
+                                <div class="col-md-8">{{ question.Date|date:'m-d-Y' }}</div>
+                            </div>
+                        </li>
+                        
         
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-4"><strong>Question Type:</strong></div>
+                                <div class="col-md-8">{{ question.Type }}</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-4"><strong>Subject:</strong></div>
+                                <div class="col-md-8">{{ question.Title }}</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-</table><br>
-  
-</div>
-<button class="btn btn-outline-success my-2 my-sm-0 ml-5 mr-5" type="submit">Save</button>
-</div>
+            
+            
+            <!-- Description of Incident -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Question</h5>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>{{ question.Content }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Answer</h5>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>{{ question.Answer}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+
+            <a href="{% url 'showQuestions' %}" class="btn btn-secondary">Back to Reports</a>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-4h6E8c86D2oXoAk8Dm9j6zG6R87YVJzT+79iYrK70gmT9s7/0u/7rK70gdT" crossorigin="anonymous"></script>
+</body>
+</html>
+
+{%endblock%}

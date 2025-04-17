@@ -10,16 +10,20 @@
    <div class="card mx-auto" id  = 'mainCard'>
     <div class="card-body mx-auto">
     {{errors}}
-    <H5 class = "text-center">Billing Question Form</H5>
+    <H5 class = "text-center">Billing Query Form</H5>
     <table>
 
-        <tr><td>Questioner Name: </td><td><input class="form-control mr-sm-2" type="text" placeholder="name"  name = 'Questioner'></td></tr>
-        <tr><td>Questioner Email: </td><td><input class="form-control mr-sm-2" type="text" placeholder="email"  name = 'questionerEmail'></td></tr>
-        <tr><td>Subject: </td><td><input class="form-control mr-sm-2" type="text" placeholder="title"  name = 'Title'></td></tr>
+        <tr><td>Type: </td><td><input class="form-control mr-sm-2" type="text" placeholder="Type"  name = 'questionType' value = '{{question.Type}}'></td></tr>
+        <tr><td>Title: </td><td><input class="form-control mr-sm-2" type="text" placeholder="Title"  name = 'questionType' value = '{{question.Title}}'></td></tr>
+        
         <tr><td>Question:<br>
-                  </td><td><textarea rows="4" cols="50" name = "Content" ></textarea></td></tr>
+                  </td><td><textarea rows="4" cols="50" name = "Content" >{{question.Content}}</textarea></td></tr>
+
+        <tr><td>Answer:<br>
+                </td><td><textarea rows="4" cols="50" name = "Answer" ></textarea>{{question.Answer}}</td></tr>
 
         
+
 </table><br>
   
 </div>

@@ -13,9 +13,10 @@
     <H5 class = "text-center">Billing Query Form</H5>
     <table>
 
-        <tr><td>Question Type: </td><td><input class="form-control mr-sm-2" type="text" placeholder="Type"  name = 'questionType'></td></tr>
+        <tr><td>Questioner Name : </td><td><input class="form-control mr-sm-2" type="text" placeholder="Type"  name = 'Questioner' value = '{{question.Questioner}}'></td></tr>
+        <tr><td>Questioner Email : </td><td><input class="form-control mr-sm-2" type="text" placeholder="Type"  name = 'questionerEmail' value = '{{question.questionerEmail}}'></td></tr>
         <tr><td>Question:<br>
-                  </td><td><textarea rows="4" cols="50" name = "questionContent" ></textarea></td></tr>
+                  </td><td><textarea rows="4" cols="50" name = "questionContent" >{{question.Content}}}}/textarea></td></tr>
 
         
 
@@ -25,3 +26,4 @@
 <button class="btn btn-outline-success my-2 my-sm-0 ml-5 mr-5" type="submit">Save</button>
 </div>
 
+{%endblock%}

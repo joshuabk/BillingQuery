@@ -25,7 +25,7 @@
          <button class="show"  role="button"><i class="fas fa-file-invoice"></i></button>
       </form></td>
     <td>
-    <form action="{% url 'editQuestion' question.pk %}" method="get" style="display:inline;">
+    <form action="{% url 'anwerQuestion' question.pk %}" method="get" style="display:inline;">
         {% csrf_token %}
        <button class="edit"  role="button"><i class="fa fa-edit"></i></button>
     </form></td>
