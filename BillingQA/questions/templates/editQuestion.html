@@ -13,10 +13,13 @@
     <H5 class = "text-center">Billing Query Form</H5>
     <table>
 
-        <tr><td>Questioner Name : </td><td><input class="form-control mr-sm-2" type="text" placeholder="Type"  name = 'Questioner' value = '{{question.Questioner}}'></td></tr>
-        <tr><td>Questioner Email : </td><td><input class="form-control mr-sm-2" type="text" placeholder="Type"  name = 'questionerEmail' value = '{{question.questionerEmail}}'></td></tr>
+        <tr><td>Questioner Name: </td><td><input class="form-control mr-sm-2" type="text" placeholder="Type"  name = 'Questioner' value = '{{question.Questioner}}'></td></tr>
+        
         <tr><td>Question:<br>
-                  </td><td><textarea rows="4" cols="50" name = "questionContent" >{{question.Content}}}}/textarea></td></tr>
+                  </td><td><textarea rows="4" cols="50" name = "questionContent" ><textarea>{{question.Content}}</textarea></td></tr>
+
+        <tr><td>Answer:<br>
+                  </td><td><textarea rows="4" cols="50" name = "questionContent" ><textarea>{{question.Answer}}</textarea></td></tr>
 
         
 

@@ -31,7 +31,7 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <!-- Incident Details -->
-                    <h5 class="card-title">Question Details</h5>
+                    
                     <ul class="list-group list-group-flush">
                         <!-- Use Bootstrap grid for label and value alignment -->
                         <li class="list-group-item">
@@ -49,7 +49,7 @@
                         
                         <li class="list-group-item">
                             <div class="row">
-                                <div class="col-md-4"><strong>Qeusiton Date:</strong></div>
+                                <div class="col-md-4"><strong>Quesiton Date:</strong></div>
                                 <div class="col-md-8">{{ question.Date|date:'m-d-Y' }}</div>
                             </div>
                         </li>
@@ -63,7 +63,7 @@
                         </li>
                         <li class="list-group-item">
                             <div class="row">
-                                <div class="col-md-4"><strong>Subject:</strong></div>
+                                <div class="col-md-4"><strong>Title:</strong></div>
                                 <div class="col-md-8">{{ question.Title }}</div>
                             </div>
                         </li>
@@ -97,7 +97,7 @@
             
             
 
-            <a href="{% url 'showQuestions' %}" class="btn btn-secondary">Back to Reports</a>
+            <a href="{% url 'showQuestions' %}" class="btn btn-secondary">Back to Questions</a>
         </div>
     </div>
 </main>

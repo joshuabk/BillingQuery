@@ -13,11 +13,20 @@
     <H5 class = "text-center">Billing Question Form</H5>
     <table>
 
-        <tr><td>Questioner Name: </td><td><input class="form-control mr-sm-2" type="text" placeholder="name"  name = 'Questioner'></td></tr>
-        <tr><td>Questioner Email: </td><td><input class="form-control mr-sm-2" type="text" placeholder="email"  name = 'questionerEmail'></td></tr>
-        <tr><td>Subject: </td><td><input class="form-control mr-sm-2" type="text" placeholder="title"  name = 'Title'></td></tr>
+      <tr><td>Questioner Name: </td><td><input class="form-control mr-sm-2" type="text" placeholder="name"  name = 'Questioner'></td></tr>
+      <tr><td>Questioner Email: </td><td><input class="form-control mr-sm-2" type="text" placeholder="email"  name = 'questionerEmail'></td></tr>
+        <tr><td>Type: </td><td><select name ='Type'  class="form-control">
+          <option value="External Beam">External Beam</option>
+          <option value="SRS">SRS</option>
+          <option value="SBRT">SBRT</option>
+          <option value="HDR">HDR</option>
+          <option value="LDR">LDR</option>
+          <option value="Total Body">Total Body</option>
+          <option value="Nursing">Nursing</option>
+        </select>
+        <tr><td>Title: </td><td><textarea class="form-control"  rows="2" cols="50" name = "Content" ></textarea></td></tr>
         <tr><td>Question:<br>
-                  </td><td><textarea rows="4" cols="50" name = "Content" ></textarea></td></tr>
+                  </td><td><textarea class="form-control"  rows="4" cols="50" name = "Content" ></textarea></td></tr>
 
         
 </table><br>

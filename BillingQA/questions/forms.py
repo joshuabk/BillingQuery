@@ -16,7 +16,7 @@ class answerForm(forms.ModelForm):
 
     class Meta:
         model = billingQuestion
-        fields = ["Content","Answer"]
+        fields = ["Answer"]
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

@@ -5,6 +5,13 @@
 {% block content%}
 <title>Incident Reports</title>
 <style>
+  .search {
+  margin: 0;
+  height: 10vh;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+ 
+  }
   table {
     border-collapse: collapse;
     width: 100%;
@@ -66,15 +73,16 @@
 
 <h1 class = "text-center  mb-5">Billing Questions</h1>
 
-<form class="form-inline my-2 my-lg-0" action ="{% url 'searchQuestions' %}" method = "POST"  >
-  {% csrf_token %}
-
-  <tr><td>Search: </td><td><input class="form-control mr-sm-2" type="text" placeholder=""  name = 'keyword'></td></tr>
+<div class = search>
+  <form class="form-inline my-2 my-lg-0" action ="{% url 'searchQuestions' %}" method = "POST"  >
+    {% csrf_token %}
+  
+    <tr><td>Search Questions: </td><td><input class="form-control mr-sm-2 ml-sm-2" type="text" placeholder=""  name = 'keyword'></td></tr>
+  
+    <button class="btn btn-outline-primary my-2 my-sm-0 ml-2 mr-5" type="submit">Search</button>
+    
+  </form>
 </div>
-  <button class="btn btn-outline-success my-2 my-sm-0 ml-5 mr-5" type="submit">Search</button>
-</div>
-
-</form>
 
 <table border = "1" class = "table ">
     <thead><th><a href="?order_by=id">ID</a><th><a href="?order_by=Date">Question Date</a></th><th><a href="?order_by=Type">Question Type</a></th><th>Question</th></th><th>Show</th><th>Answer</th><th>Delete</th></thead>
@@ -82,7 +90,7 @@
 <tbody>
 {%for question in questions%}
     <tr class="{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
-        {%include 'showUnasweredBase.html'%}
+        {%include 'showUnansweredBase.html'%}
     </tr>
 {% endfor %}
 </tbody>

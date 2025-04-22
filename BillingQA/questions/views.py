@@ -28,7 +28,9 @@ from django.core import mail
 from django.core.mail.backends.smtp import EmailBackend
 
 # Create your views here.
-
+#login
+#user: billing
+#pass: northside1
 
 def submitQuestion(request):
 
@@ -46,7 +48,7 @@ def submitQuestion(request):
 
 def showQuestions(request):
     orderBy = request.GET.get('order_by', 'Date')
-    questions = billingQuestion.objects.all().order_by(orderBy)
+    questions = billingQuestion.objects.filter(Answered = True).order_by(orderBy)
     return render(request, 'showQuestions.html', {'questions':questions})
 
 def searchQuestions(request):
@@ -65,9 +67,9 @@ def searchQuestions(request):
 
 def showUnanswered(request):
     orderBy = request.GET.get('order_by', 'Date')
-    questions = billingQuestion.objects.get(Answered ==False).order_by(orderBy)
+    questions = billingQuestion.objects.filter(Answered =False).order_by(orderBy)
     
-    return render(request, 'showQuestions.html', {'questions':questions})
+    return render(request, 'showUnanswered.html', {'questions':questions})
 
 def deleteQuestion(request, question_id):
     question = billingQuestion.objects.get(pk = question_id)
@@ -102,6 +104,32 @@ def editQuestion(request, question_id):
         
         return render(request, 'editQuestion.html', {'question':question})
 
+def answerQuestion(request, question_id):
+    question = billingQuestion.objects.get(pk = question_id)
+    if request.method == "POST":
+        
+        form = answerForm(request.POST or None, instance=question)
+        print(form.errors)
+        if form.is_valid():
+            
+            messages.success(request, ('Question has been Answered'))
+           
+            answer = form.save(commit = False)
+            answer.Answered = True
+            answer.save()
+
+            
+            
+            return redirect('showUnanswered')
+        else:
+           
+            print("Farts")
+            messages.error(request, "Error")
+            requests = billingQuestion.objects.all()
+            return redirect('showQuestions')
+    else:
+
+        return render(request, 'answerQuestion.html', {'question':question})
            
 def showQuestion(request, question_id):
     if request.method == "GET":

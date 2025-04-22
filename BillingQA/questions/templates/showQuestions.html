@@ -81,12 +81,13 @@
   <tr><td>Search Questions: </td><td><input class="form-control mr-sm-2 ml-sm-2" type="text" placeholder=""  name = 'keyword'></td></tr>
 
   <button class="btn btn-outline-primary my-2 my-sm-0 ml-2 mr-5" type="submit">Search</button>
-</div>
 
 </form>
+</div>
+
 
 <table border = "1" class = "table ">
-    <thead><th><a href="?order_by=id">ID</a><th><a href="?order_by=Date">Question Date</a></th><th><a href="?order_by=Type">Question Type</a></th><th>Question</th></th><th>Show</th><th>Edit</th><th>Delete</th></thead>
+    <thead><th><a href="?order_by=id">ID</a><th><a href="?order_by=Date">Question Date</a></th><th><a href="?order_by=Type">Question Type</a></th><th><a href="?order_by=Title">Question Title</a></th><th>Question</th><th>Show</th>{% if user.is_authenticated %}<th>Edit</th> <th>Delete</th>{% endif %}</thead>
 
 <tbody>
 {%for question in questions%}
