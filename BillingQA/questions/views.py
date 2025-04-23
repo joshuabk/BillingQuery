@@ -40,30 +40,64 @@ def submitQuestion(request):
             question = form.save()
 
 
-         orderBy = request.GET.get('order_by', 'Date')
-         questions = billingQuestion.objects.all().order_by(orderBy)
-         return render(request, 'showQuestions.html', {'questions':questions})
+            orderBy = request.GET.get('order_by', 'Date')
+            questions = billingQuestion.objects.all().order_by(orderBy)
+            return render(request, 'submissionSuccess.html')
+         print("there has been an error")
+         print(form.errors)
+         return render(request, 'submitQuestion.html')
     else:
+
         return render(request, 'submitQuestion.html')       
 
 def showQuestions(request):
     orderBy = request.GET.get('order_by', 'Date')
     questions = billingQuestion.objects.filter(Answered = True).order_by(orderBy)
-    return render(request, 'showQuestions.html', {'questions':questions})
+    type = " "
+    return render(request, 'showQuestions.html', {'questions':questions, 'type': type})
 
-def searchQuestions(request):
+def searchQuestionsUnanswered(request):
     keyword = request.POST.get('keyword')
     print(keyword)
+    orderBy = request.GET.get('order_by', 'Date')
+    questions = billingQuestion.objects.filter(Answered = False).order_by(orderBy)
     if keyword != "":
          
-         
-         orderBy = request.GET.get('order_by', 'Date')
-         questions = billingQuestion.objects.all().order_by(orderBy)
          fil_questions = questions.filter(Q(Title__icontains = keyword)|Q(Content__icontains = keyword))
 
-         return render(request, 'showQuestions.html', {'questions':fil_questions})
+         return render(request, 'showUnanswered.html', {'questions':fil_questions})
     else:
-        return render(request, 'showQuestions.html', {'questions':questions})
+        return redirect('showUnanswered')
+
+def searchQuestionsAnswered(request, type):
+    keyword = request.POST.get('keyword')
+    
+    print(keyword)
+    orderBy = request.GET.get('order_by', 'Date')
+    if type != " ":
+        questions = billingQuestion.objects.filter(Answered = True, Type = type).order_by(orderBy)
+    else:
+        questions = billingQuestion.objects.filter(Answered = True,).order_by(orderBy)
+    if keyword != "":
+         
+         fil_questions = questions.filter(Q(Title__icontains = keyword)|Q(Content__icontains = keyword))
+
+         return render(request, 'showQuestions.html', {'questions':fil_questions, 'type': type})
+    else:
+        return redirect('showQuestions')
+
+def filterType(request):
+    type = request.POST.get('Type')
+    print(type)
+    orderBy = request.GET.get('order_by', 'Date')
+    questions = billingQuestion.objects.filter(Answered = True).order_by(orderBy)
+    if type != "":
+         
+         fil_questions = questions.filter(Type = type).order_by(orderBy)
+
+         return render(request, 'showQuestions.html', {'questions':fil_questions, 'type':type})
+    else:
+        return redirect('showQuestions')
 
 def showUnanswered(request):
     orderBy = request.GET.get('order_by', 'Date')

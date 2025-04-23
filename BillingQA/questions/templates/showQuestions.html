@@ -75,7 +75,26 @@
 <h1 class = "text-center  mb-5">Billing Questions</h1>
 
 <div class = search>
-<form class="form-inline my-2 my-lg-0" action ="{% url 'searchQuestions' %}" method = "POST"  >
+  <form class="form-inline my-2 my-lg-0" action ="{% url 'filterType' %}" method = "POST"  id = 'filter-form'>
+    {% csrf_token %}
+  
+    <select name ='Type'  class="form-control" onchange= "document.getElementById('filter-form').submit();">
+      <option value="">Select Question Type</option>
+      <option value="External Beam" {% if type == "External Beam" %}selected{% endif %}>External Beam</option> 
+      <option value="SRS" {% if type == "SRS" %}selected{% endif %}>SRS</option> 
+      <option value="SBRT" {% if type == "SBRT" %}selected{% endif %}>SBRT</option>
+      <option value="HDR" {% if type == "HDR" %}selected{% endif %}>HDR</option>
+      <option value="LDR" {% if type == "LDR" %}selected{% endif %}>LDR</option>
+      <option value="Total Body" {% if type == "Total Body" %}selected{% endif %}>Total Body</option>
+      <option value="Nursing" {% if type == "Nursing" %}selected{% endif %}>Nursing</option>
+      
+    </select>
+  
+  </form>
+  </div>
+
+<div class = search>
+<form class="form-inline my-2 my-lg-0" action ="{% url 'searchQuestionsAnswered' type %}" method = "POST"  >
   {% csrf_token %}
 
   <tr><td>Search Questions: </td><td><input class="form-control mr-sm-2 ml-sm-2" type="text" placeholder=""  name = 'keyword'></td></tr>
