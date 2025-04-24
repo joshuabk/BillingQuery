@@ -97,21 +97,21 @@
 <form class="form-inline my-2 my-lg-0" action ="{% url 'searchQuestionsAnswered' type %}" method = "POST"  >
   {% csrf_token %}
 
-  <tr><td>Search Questions: </td><td><input class="form-control mr-sm-2 ml-sm-2" type="text" placeholder=""  name = 'keyword'></td></tr>
+  <tr><td><input class="form-control mr-sm-2 ml-sm-2" type="text" placeholder=""  name = 'keyword'></td></tr>
 
-  <button class="btn btn-outline-primary my-2 my-sm-0 ml-2 mr-5" type="submit">Search</button>
+  <button class="btn btn-outline-primary my-2 my-sm-0 ml-2 mr-5" type="submit"><i class="fa fa-search"></i></button>
 
 </form>
 </div>
 
 
 <table border = "1" class = "table ">
-    <thead><th><a href="?order_by=id">ID</a><th><a href="?order_by=Date">Question Date</a></th><th><a href="?order_by=Type">Question Type</a></th><th><a href="?order_by=Title">Question Title</a></th><th>Question</th><th>Show</th>{% if user.is_authenticated %}<th>Edit</th> <th>Delete</th>{% endif %}</thead>
+    <thead><th><a href="?order_by=Date">Date</a></th><th><a href="?order_by=Type">Type</a></th><th>Title</th><th>Question</th><th>Answer</th><th>Show</th>{% if user.is_authenticated %}<th>Edit</th> <th>Delete</th>{% endif %}</thead>
 
 <tbody>
 {%for question in questions%}
     <tr class="{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
-        {%include 'showQuestionBase.html'%}
+        {%include 'showQuestionsBase.html'%}
     </tr>
 {% endfor %}
 </tbody>

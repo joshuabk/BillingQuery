@@ -73,19 +73,9 @@
 
 <h1 class = "text-center  mb-5">Billing Questions</h1>
 
-<div class = search>
-  <form class="form-inline my-2 my-lg-0" action ="{% url 'searchQuestionsUnanswered' %}" method = "POST"  >
-    {% csrf_token %}
-  
-    <tr><td>Search Questions: </td><td><input class="form-control mr-sm-2 ml-sm-2" type="text" placeholder=""  name = 'keyword'></td></tr>
-  
-    <button class="btn btn-outline-primary my-2 my-sm-0 ml-2 mr-5" type="submit">Search</button>
-
-  </form>
-</div>
 
 <table border = "1" class = "table ">
-    <thead><th><a href="?order_by=id">ID</a><th><a href="?order_by=Date">Question Date</a></th><th><a href="?order_by=Type">Question Type</a></th><th>Question</th></th><th>Show</th><th>Answer</th><th>Delete</th></thead>
+    <thead><th><a href="?order_by=id">ID</a><th><a href="?order_by=Date">Date</a></th><th><a href="?order_by=Type">Type</a></th><th>Title</th><th>Question</th></th><th>Show</th><th>Answer</th><th>Delete</th></thead>
 
 <tbody>
 {%for question in questions%}

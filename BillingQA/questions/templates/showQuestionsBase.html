@@ -6,10 +6,7 @@
 
 </style>
    
- 
-
-   <td>{{question.id}}</td> 
-   
+  
 
    <td>{{question.Date|date:'m/d/Y'}}</td>
    <td>{{question.Type}}</td>
@@ -18,6 +15,7 @@
         
        
     <td><textarea rows="3" cols="20" readonly style="border: none">{{question.Content}}</textarea></td>
+    <td><textarea rows="3" cols="20" readonly style="border: none">{{question.Answer}}</textarea></td>
 
     <td>
       <form action="{% url 'showQuestion' question.pk %}" method="get" style="display:inline;">
