@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import FileExtensionValidator
 
 # Create your models here.
 
@@ -14,4 +15,8 @@ class billingQuestion(models.Model):
     
     def __str__(self):
         return self.billingQuestion
+
+class billingPDF(models.Model):
+    title = models.CharField(max_length = 40)
+    pdf_file = models.FileField(upload_to = 'pdfs/', validators = [FileExtensionValidator(allowed_extensions = ['pdf'])])
 

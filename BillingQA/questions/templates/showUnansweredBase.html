@@ -31,7 +31,7 @@
     </form></td>
     <td>
     <form action="{% url 'deleteQuestion' question.pk %}" method="post" style="display:inline;">
-      {% csrf_token %}
+       {% csrf_token %}
       <button class="delete"  onclick="return confirm('Are you sure you want to delete this entry?')" role="button"><i class="fa fa-trash"></i></button>
   </form></td>
    
