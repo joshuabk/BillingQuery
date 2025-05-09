@@ -79,7 +79,7 @@
     {% csrf_token %}
   
     <select name ='Type'  class="form-control" onchange= "document.getElementById('filter-form').submit();">
-      <option value="">Select Question Type</option>
+      <option value="">Select Category</option>
       <option value="External Beam" {% if type == "External Beam" %}selected{% endif %}>External Beam</option> 
       <option value="SRS" {% if type == "SRS" %}selected{% endif %}>SRS</option> 
       <option value="SBRT" {% if type == "SBRT" %}selected{% endif %}>SBRT</option>
@@ -106,7 +106,7 @@
 
 
 <table border = "1" class = "table ">
-    <thead><th><a href="?order_by=Date">Date</a></th><th><a href="?order_by=Type">Type</a></th><th>Title</th><th>Question</th><th>Answer</th><th>Show</th>{% if user.is_authenticated %}<th>Edit</th> <th>Delete</th>{% endif %}</thead>
+    <thead><th><a href="?order_by=Date">Date</a></th><th><a href="?order_by=Type">Category</a></th><th>Title</th><th>Question</th><th>Answer</th><th>Show</th>{% if user.is_authenticated %}<th>Edit</th> <th>Delete</th>{% endif %}</thead>
 
 <tbody>
 {%for question in questions%}

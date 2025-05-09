@@ -1,8 +1,122 @@
 {% extends 'base.html'%}
 
 
-{% block content%}
 
+{% block content%}
+<title>Incident Reports</title>
+<style>
+  .search {
+  margin: 0;
+  height: 10vh;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+ 
+}
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 1000px;
+    margin: 20px auto;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+.even {
+    background-color: #f2f2f2; /* Light gray */
+}
+
+.odd {
+    background-color: #ffffff; /* White */
+}
+  th, td {
+    width: auto;
+}
+  .btn {
+    padding: 8px 16px;
+    margin: 4px 2px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  .btn-edit {
+    background-color: #008CBA; 
+    color: white;
+    border: none;
+  }
+  .btn-edit:hover {
+    background-color: #007BB5;
+  }
+  .btn-delete {
+    background-color: #f44336; 
+    color: white;
+    border: none;
+  }
+  .btn-delete:hover {
+    background-color: #DA190B;
+  }
+  .description {
+    white-space: normal;
+    word-wrap: break-word;
+  }
+</style>
+</head>
+
+<h1 class = "text-center  mb-5">Billing Documents</h1>
+<div class = search>
+  <form class="form-inline my-2 my-lg-0" action ="{% url 'filterDocType' %}" method = "POST"  id = 'filter-form'>
+    {% csrf_token %}
+  
+    <select name ='Category'  class="form-control" onchange= "document.getElementById('filter-form').submit();">
+      <option value="">Select Category</option>
+      <option value="External Beam" {% if type == "External Beam" %}selected{% endif %}>External Beam</option> 
+      <option value="SRS" {% if category == "SRS" %}selected{% endif %}>SRS</option> 
+      <option value="SBRT" {% if category == "SBRT" %}selected{% endif %}>SBRT</option>
+      <option value="HDR" {% if category == "HDR" %}selected{% endif %}>HDR</option>
+      <option value="LDR" {% if category == "LDR" %}selected{% endif %}>LDR</option>
+      <option value="Total Body" {% if category == "Total Body" %}selected{% endif %}>Total Body</option>
+      <option value="Nursing" {% if category == "Nursing" %}selected{% endif %}>Nursing</option>
+      
+    </select>
+  
+  </form>
+  </div>
+
+
+
+<div class = search>
+<form class="form-inline my-2 my-lg-0" action ="{% url 'searchQuestionsAnswered' category %}" method = "POST"  >
+  {% csrf_token %}
+
+  <tr><td><input class="form-control mr-sm-2 ml-sm-2" category="text" placeholder=""  name = 'keyword'></td></tr>
+
+  <button class="btn btn-outline-primary my-2 my-sm-0 ml-2 mr-5" category="submit"><i class="fa fa-search"></i></button>
+
+</form>
+</div>
+
+
+<table border = "1" class = "table ">
+    <thead><th><a href="?order_by=category">Category</a></th><th>Title</th><th>Show</th>{% if user.is_authenticated %}<th>Edit</th> <th>Delete</th>{% endif %}</thead>
+
+<tbody>
+{%for doc in docs%}
+    <tr class="{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+        {%include 'showPDFsBase.html'%}
+    </tr>
+{% endfor %}
+</tbody>
+</table>
 
 
 {%endblock%}

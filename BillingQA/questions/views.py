@@ -11,8 +11,8 @@ from django.contrib.auth.decorators import login_required
 
 from smtplib import SMTPException
 from datetime import datetime
-from .forms import questionForm, answerForm 
-from .models import billingQuestion
+from .forms import questionForm, answerForm, submitPDFForm 
+from .models import billingQuestion, billingPDF
 from django.db.models import Q
 
 from reportlab.pdfgen import canvas
@@ -48,13 +48,38 @@ def submitQuestion(request):
          return render(request, 'submitQuestion.html')
     else:
 
-        return render(request, 'submitQuestion.html')       
+        return render(request, 'submitQuestion.html')  
+
+def submitPDF(request):
+
+    if request.method == "POST":
+         form = submitPDFForm(request.POST, request.FILES)
+         if form.is_valid():
+            pdfDoc = form.save()
+
+
+            #orderBy = request.GET.get('order_by', 'Date')
+            pdfs = billingPDF.objects.all()
+            return render(request, 'submissionSuccessDoc.html')
+         print("there has been an error")
+         print(form.errors)
+         return render(request, 'submitPDF.html')
+    else:
+
+        return render(request, 'submitPDF.html')  
 
 def showQuestions(request):
     orderBy = request.GET.get('order_by', 'Date')
     questions = billingQuestion.objects.filter(Answered = True).order_by(orderBy)
     type = " "
     return render(request, 'showQuestions.html', {'questions':questions, 'type': type})
+
+def showPDFs(request):
+    orderBy = request.GET.get('order_by', 'Category')
+    docs = billingPDF.objects.filter().order_by(orderBy)
+    category = " "
+    return render(request, 'showPDFs.html', {'docs':docs, 'category': category})
+
 
 def searchQuestionsUnanswered(request):
     keyword = request.POST.get('keyword')
@@ -99,6 +124,19 @@ def filterType(request):
     else:
         return redirect('showQuestions')
 
+def filterDocType(request):
+    cat = request.POST.get('Category')
+    print(cat)
+    
+    docs = billingPDF.objects.filter()
+    if cat != "":
+         
+         fil_docs = docs.filter(Category = cat)
+
+         return render(request, 'showPDFs.html', {'docs':fil_docs, 'category':cat})
+    else:
+        return redirect('showPDFs')
+
 def showUnanswered(request):
     orderBy = request.GET.get('order_by', 'Date')
     questions = billingQuestion.objects.filter(Answered =False).order_by(orderBy)
@@ -110,6 +148,12 @@ def deleteQuestion(request, question_id):
     question.delete()
     requests = billingQuestion.objects.all()
     return redirect('showQuestions')
+
+def deletePDF(request, doc_id):
+    doc = billingPDF.objects.get(pk = doc_id)
+    doc.delete()
+    #requests = billingPDF.objects.all()
+    return redirect('showPDFs')
 
 def editQuestion(request, question_id):
     if request.method == "POST":
