@@ -61,12 +61,12 @@ def submitPDF(request):
             #orderBy = request.GET.get('order_by', 'Date')
             pdfs = billingPDF.objects.all()
             return render(request, 'submissionSuccessDoc.html')
-         print("there has been an error")
-         print(form.errors)
-         return render(request, 'submitPDF.html')
+            print("there has been an error")
+            print(form.errors)
+            return render(request, 'showPDFs.html')
     else:
 
-        return render(request, 'submitPDF.html')  
+        return render(request,'submitPDF.html')  
 
 def showQuestions(request):
     orderBy = request.GET.get('order_by', 'Date')
