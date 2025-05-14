@@ -14,6 +14,7 @@ urlpatterns = [
     path('deletePDF/<doc_id>', views.deletePDF, name='deletePDF'),
     path('answerQuestion/<question_id>', views.answerQuestion, name='answerQuestion'),
     path('searchQuestionsAnswered/<str:type>', views.searchQuestionsAnswered, name='searchQuestionsAnswered'),
+    path('searchPDFs/<str:category>', views.searchPDFs, name='searchPDFs'),
     path('searchQuestionsUnanswered', views.searchQuestionsUnanswered, name='searchQuestionsUnanswered'),
     path('filterType', views.filterType, name='filterType'),
     path('filterDocType', views.filterDocType, name='filterDocType'),

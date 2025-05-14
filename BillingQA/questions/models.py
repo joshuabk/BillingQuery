@@ -17,6 +17,7 @@ class billingQuestion(models.Model):
         return self.billingQuestion
 
 class billingPDF(models.Model):
+    Date = models.DateTimeField(auto_now_add=True)
     Title = models.CharField(max_length = 40, default = '')
     Category = models.CharField(max_length = 30, null = True)
     PDF_file = models.FileField(upload_to = 'pdfs/', validators = [FileExtensionValidator(allowed_extensions = ['pdf'])])

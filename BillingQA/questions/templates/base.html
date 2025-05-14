@@ -39,11 +39,13 @@
      <li class="nav-item">
       <a class="nav-link" href="{% url 'showUnanswered' %}">Unanswered Questions</a>
     </li> 
+    {% endif %}
     <li class="nav-item">
       <a class="nav-link" href="{% url 'showPDFs' %}">Documents</a>
     </li> 
+    {% if user.is_authenticated %}
     <li class="nav-item">
-      <a class="nav-link" href="{% url 'submitPDF' %}">Upload</a>
+      <a class="nav-link" href="{% url 'submitPDF' %}">Upload PDF</a>
     </li> 
     {% endif %}
 

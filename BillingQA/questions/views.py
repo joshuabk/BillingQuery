@@ -109,7 +109,24 @@ def searchQuestionsAnswered(request, type):
 
          return render(request, 'showQuestions.html', {'questions':fil_questions, 'type': type})
     else:
-        return redirect('showQuestions')
+        return render(request,'showQuestions.html', {'questions':questions, 'type': type})
+
+def searchPDFs(request, category):
+    keyword = request.POST.get('keyword')
+    
+    print(keyword)
+    orderBy = request.GET.get('order_by', 'Date')
+    if category != " ":
+        docs = billingPDF.objects.filter(Category = category).order_by(orderBy)
+    else:
+        docs = billingPDF.objects.filter().order_by(orderBy)
+    if keyword != "":
+         
+         fil_docs = docs.filter(Q(Title__icontains = keyword))
+
+         return render(request, 'showPDFs.html', {'docs':fil_docs, 'category': category})
+    else:
+        return render(request, 'showPDFs.html', {'docs':docs, 'category': category})
 
 def filterType(request):
     type = request.POST.get('Type')

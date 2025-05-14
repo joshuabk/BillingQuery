@@ -79,7 +79,7 @@
   
     <select name ='Category'  class="form-control" onchange= "document.getElementById('filter-form').submit();">
       <option value="">Select Category</option>
-      <option value="External Beam" {% if type == "External Beam" %}selected{% endif %}>External Beam</option> 
+      <option value="External Beam" {% if category == "External Beam" %}selected{% endif %}>External Beam</option> 
       <option value="SRS" {% if category == "SRS" %}selected{% endif %}>SRS</option> 
       <option value="SBRT" {% if category == "SBRT" %}selected{% endif %}>SBRT</option>
       <option value="HDR" {% if category == "HDR" %}selected{% endif %}>HDR</option>
@@ -95,10 +95,10 @@
 
 
 <div class = search>
-<form class="form-inline my-2 my-lg-0" action ="{% url 'searchQuestionsAnswered' category %}" method = "POST"  >
+<form class="form-inline my-2 my-lg-0" action ="{% url 'searchPDFs' category %}" method = "POST"  >
   {% csrf_token %}
 
-  <tr><td><input class="form-control mr-sm-2 ml-sm-2" category="text" placeholder=""  name = 'keyword'></td></tr>
+  <tr>Keyword<td><input class="form-control mr-sm-2 ml-sm-2" category="text" placeholder=""  name = 'keyword'></td></tr>
 
   <button class="btn btn-outline-primary my-2 my-sm-0 ml-2 mr-5" category="submit"><i class="fa fa-search"></i></button>
 
@@ -107,7 +107,7 @@
 
 
 <table border = "1" class = "table ">
-    <thead><th><a href="?order_by=category">Category</a></th><th>Title</th><th>Show</th>{% if user.is_authenticated %}<th>Edit</th> <th>Delete</th>{% endif %}</thead>
+    <thead><th><a href="?order_by=Date">Date</a></th><th><a href="?order_by=Category">Category</a></th><th>Title</th><th>Show</th>{% if user.is_authenticated %}<th>Edit</th> <th>Delete</th>{% endif %}</thead>
 
 <tbody>
 {%for doc in docs%}
