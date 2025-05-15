@@ -9,6 +9,7 @@ urlpatterns = [
     path('showUnanswered/', views.showUnanswered, name='showUnanswered'),
     path('showPDFs/', views.showPDFs, name='showPDFs'),
     path('editQuestion/<question_id>', views.editQuestion, name='editQuestion'),
+    path('editPDF/<doc_id>', views.editPDF, name='editPDF'),
     path('showQuestion/<question_id>', views.showQuestion, name='showQuestion'),
     path('deleteQuestion/<question_id>', views.deleteQuestion, name='deleteQuestion'),
     path('deletePDF/<doc_id>', views.deletePDF, name='deletePDF'),

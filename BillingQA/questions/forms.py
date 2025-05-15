@@ -25,11 +25,19 @@ class editQuestionForm(forms.ModelForm):
 
     class Meta:
         model = billingQuestion
-        fields= [ "Type", "Content", "Answer"]
+        fields= [ "Type", "Title", "Content", "Answer"]
     def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
 
 class submitPDFForm(forms.ModelForm):
+
+    class Meta:
+        model = billingPDF
+        fields= [ "Category", "PDF_file", "Title"]
+    def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+
+class editPDFForm(forms.ModelForm):
 
     class Meta:
         model = billingPDF

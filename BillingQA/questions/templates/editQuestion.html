@@ -4,22 +4,35 @@
 {% block content%}
 
 
-<form class="form-inline my-2 my-lg-0" action ="{% url 'submitQuestion' %}" method = "POST"  >
+<form class="form-inline my-2 my-lg-0" action ="{% url 'editQuestion' question.pk %}" method = "POST"  >
     {% csrf_token %}
 
    <div class="card mx-auto" id  = 'mainCard'>
     <div class="card-body mx-auto">
     {{errors}}
-    <H5 class = "text-center">Billing Query Form</H5>
+    <H5 class = "text-center">Edit Question</H5>
     <table>
 
-        <tr><td>Questioner Name: </td><td><input class="form-control mr-sm-2" type="text" placeholder="Name"  name = 'Questioner' value = '{{question.Questioner}}'></td></tr>
+        
+
+        <tr><td>Title: </td><td><input class="form-control mr-sm-2" type="text" placeholder="title"  name = 'Title' value = '{{question.Title}}' size = "40"></td></tr>
+        <tr><td>Category: </td><td><select name = 'Type'  class="form-control">
+            
+            <option value="External Beam" {% if question.Type == "External Beam" %}selected{% endif %}>External Beam</option> 
+            <option value="SRS" {% if question.Type == "SRS" %}selected{% endif %}>SRS</option> 
+            <option value="SBRT" {% if question.Type == "SBRT" %}selected{% endif %}>SBRT</option>
+            <option value="HDR" {% if question.Type == "HDR" %}selected{% endif %}>HDR</option>
+            <option value="LDR" {% if question.Type == "LDR" %}selected{% endif %}>LDR</option>
+            <option value="Total Body" {% if question.Type == "Total Body" %}selected{% endif %}>Total Body</option>
+            <option value="Nursing" {% if question.Type == "Nursing" %}selected{% endif %}>Nursing</option>
+            
+          </select></td></tr>
         
         <tr><td>Question:<br>
-                  </td><td><textarea rows="4" cols="50" name = "questionContent" ><textarea>{{question.Content}}</textarea></td></tr>
+                  </td><td><textarea rows="4" cols="50" name = "Content" >{{question.Content}}</textarea></td></tr>
 
         <tr><td>Answer:<br>
-                  </td><td><textarea rows="4" cols="50" name = "questionContent" ><textarea>{{question.Answer}}</textarea></td></tr>
+                  </td><td><textarea rows="4" cols="50" name = "Answer" >{{question.Answer}}</textarea></td></tr>
 
         
 

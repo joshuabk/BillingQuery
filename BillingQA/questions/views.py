@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 
 from smtplib import SMTPException
 from datetime import datetime
-from .forms import questionForm, answerForm, submitPDFForm 
+from .forms import questionForm, answerForm, submitPDFForm, editPDFForm, editQuestionForm 
 from .models import billingQuestion, billingPDF
 from django.db.models import Q
 
@@ -198,6 +198,33 @@ def editQuestion(request, question_id):
         question = billingQuestion.objects.get(pk = question_id)
         
         return render(request, 'editQuestion.html', {'question':question})
+
+def editPDF(request, doc_id):
+    if request.method == "POST":
+        doc = billingPDF.objects.get(pk = doc_id)
+        form = editPDFForm(request.POST or None, instance=doc)
+        print(form.errors)
+        if form.is_valid():
+            
+            messages.success(request, ('Item has been Edited'))
+           
+            temReq = form.save()
+
+            requests = list(billingPDF.objects.all())
+            
+            return redirect('showPDFs')
+        else:
+           
+            print("Farts")
+            messages.error(request, "Error")
+            requests = billingPDF.objects.all()
+            return redirect('showPDFs')
+           
+    else:
+        
+        doc = billingPDF.objects.get(pk = doc_id)
+        
+        return render(request, 'editPDF.html', {'doc':doc})
 
 def answerQuestion(request, question_id):
     question = billingQuestion.objects.get(pk = question_id)

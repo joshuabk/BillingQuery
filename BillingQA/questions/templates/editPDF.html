@@ -1,0 +1,43 @@
+{% extends 'base.html'%}
+
+
+{% block content%}
+
+
+<form class="form-inline my-2 my-lg-0" action ="{% url 'editPDF' doc.pk %}" method = "POST"  >
+    {% csrf_token %}
+
+   <div class="card mx-auto" id  = 'mainCard'>
+    <div class="card-body mx-auto">
+    {{errors}}
+    <H5 class = "text-center">Edit Document</H5>
+    <table>
+
+        <tr><td>Title: </td><td><input class="form-control mr-sm-2" type="text" placeholder="title"  name = 'Title' value = '{{doc.Title}}' size = "40"></td></tr>
+        <tr><td>Category:</td><td><select name ='Category'  class="form-control">
+            
+            <option value="External Beam" {% if doc.Category == "External Beam" %}selected{% endif %}>External Beam</option> 
+            <option value="SRS" {% if doc.Category == "SRS" %}selected{% endif %}>SRS</option> 
+            <option value="SBRT" {% if doc.Category == "SBRT" %}selected{% endif %}>SBRT</option>
+            <option value="HDR" {% if doc.Category == "HDR" %}selected{% endif %}>HDR</option>
+            <option value="LDR" {% if doc.Category == "LDR" %}selected{% endif %}>LDR</option>
+            <option value="Total Body" {% if doc.Category == "Total Body" %}selected{% endif %}>Total Body</option>
+            <option value="Nursing" {% if doc.Category == "Nursing" %}selected{% endif %}>Nursing</option>
+            
+          </select></td></tr>
+
+        
+          <tr><td>PDF:<br>
+          </td><td><a href="{{ doc.PDF_file.url }}" target="_blank">{{ doc.PDF_file.name }}</a></td></tr>
+
+
+        
+        
+
+</table><br>
+  
+</div>
+<button class="btn btn-outline-success my-2 my-sm-0 ml-5 mr-5" type="submit">Save</button>
+</div>
+
+{%endblock%}

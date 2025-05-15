@@ -20,7 +20,7 @@
      
     {% if user.is_authenticated %} 
     <td>
-    <form action="{% url 'editQuestion' doc.pk %}" method="get" style="display:inline;">
+    <form action="{% url 'editPDF' doc.pk %}" method="get" style="display:inline;">
         {% csrf_token %}
        <button class="edit"  role="button"><i class="fa fa-edit"></i></button>
     </form></td>
