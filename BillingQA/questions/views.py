@@ -14,6 +14,9 @@ from datetime import datetime
 from .forms import questionForm, answerForm, submitPDFForm, editPDFForm, editQuestionForm 
 from .models import billingQuestion, billingPDF
 from django.db.models import Q
+import spacy
+import numpy as np
+from django.db.models import Case, When
 
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
@@ -94,6 +97,24 @@ def searchQuestionsUnanswered(request):
     else:
         return redirect('showUnanswered')
 
+def wordEmbedSearch(search_phrase, questions):
+    nlp = spacy.load("en_core_web_lg")
+    questionsL = list(questions)
+    question_ids = [q.id  for q in questionsL]
+    questionsC = [q.Content for q in questionsL]
+    question_vectors = [nlp(q).vector for q in questionsC]
+    search_vector = nlp(search_phrase).vector
+    similarities = [np.dot(search_vector, qv) / (np.linalg.norm(search_vector) * np.linalg.norm(qv)) for qv in question_vectors]
+    n = 4
+    top_indices = np.argsort(similarities)[::-1][:n]
+    top_question_ids = [question_ids[i] for i in top_indices if question_ids[i]]
+    preserved_order = Case(*[When(id=pk, then=pos) for pos, pk in enumerate(top_question_ids)])
+    top_questions = billingQuestion.objects.filter(id__in=top_question_ids).order_by(preserved_order)
+    print(top_questions)
+    return top_questions
+
+
+
 def searchQuestionsAnswered(request, type):
     keyword = request.POST.get('keyword')
     
@@ -106,10 +127,12 @@ def searchQuestionsAnswered(request, type):
     if keyword != "":
          
          fil_questions = questions.filter(Q(Title__icontains = keyword)|Q(Content__icontains = keyword))
-
-         return render(request, 'showQuestions.html', {'questions':fil_questions, 'type': type})
+         top_questions = wordEmbedSearch(keyword, questions)
+         return render(request, 'showQuestions.html', {'questions':top_questions, 'type': type})
     else:
+        
         return render(request,'showQuestions.html', {'questions':questions, 'type': type})
+    
 
 def searchPDFs(request, category):
     keyword = request.POST.get('keyword')
