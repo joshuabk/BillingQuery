@@ -75,7 +75,7 @@ def showQuestions(request):
     orderBy = request.GET.get('order_by', 'Date')
     questions = billingQuestion.objects.filter(Answered = True).order_by(orderBy)
     type = " "
-    return render(request, 'showQuestions.html', {'questions':questions, 'type': type})
+    return render(request, 'showQuestions.html', {'questions':questions, 'type': type, 'search_phrase': ''})
 
 def showPDFs(request):
     orderBy = request.GET.get('order_by', 'Category')
@@ -128,10 +128,10 @@ def searchQuestionsAnswered(request, type):
          
          fil_questions = questions.filter(Q(Title__icontains = keyword)|Q(Content__icontains = keyword))
          top_questions = wordEmbedSearch(keyword, questions)
-         return render(request, 'showQuestions.html', {'questions':top_questions, 'type': type})
+         return render(request, 'showQuestions.html', {'questions':top_questions, 'type': type, 'search_phrase': keyword})
     else:
         
-        return render(request,'showQuestions.html', {'questions':questions, 'type': type})
+        return render(request,'showQuestions.html', {'questions':questions, 'type': type, 'search_phrase': ''})
     
 
 def searchPDFs(request, category):

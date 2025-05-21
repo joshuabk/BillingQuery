@@ -97,7 +97,7 @@
 <form class="form-inline my-2 my-lg-0" action ="{% url 'searchQuestionsAnswered' type %}" method = "POST"  >
   {% csrf_token %}
 
-  <tr>Search<td><input class="form-control mr-sm-2 ml-sm-2" type="text" placeholder=""  name = 'keyword'></td></tr>
+  <tr>Search<td><input class="form-control mr-sm-2 ml-sm-2" type="text" placeholder=""  name = 'keyword' value='{{search_phrase}}'></td></tr>
 
   <button class="btn btn-outline-primary my-2 my-sm-0 ml-2 mr-5" type="submit"><i class="fa fa-search"></i></button>
 
