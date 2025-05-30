@@ -42,12 +42,23 @@ def submitQuestion(request):
          if form.is_valid():
             question = form.save()
 
-
+            body = 'A new billing question has been submitted \n\n Here is the link to the billing questions page http://167.183.14.241:2003/'
             orderBy = request.GET.get('order_by', 'Date')
             questions = billingQuestion.objects.all().order_by(orderBy)
+            email = EmailMessage(
+                  'New Billing Question',
+                   body,
+                    settings.EMAIL_HOST_USER,
+                   [question.questionerEmail,'Joshua.Kessler@northside.com'])
+            
+            
+            email.send()
+            print('mail sent')
             return render(request, 'submissionSuccess.html')
+            
          print("there has been an error")
          print(form.errors)
+
          return render(request, 'submitQuestion.html')
     else:
 
@@ -70,17 +81,45 @@ def submitPDF(request):
     else:
 
         return render(request,'submitPDF.html')  
+def searchQuestionsAnswered(request, type):
+    keyword = request.POST.get('keyword')
+    
+    print(keyword)
+    orderBy = request.GET.get('order_by', 'Date')
+    if type != " ":
+        questions = billingQuestion.objects.filter(Answered = True, Type = type).order_by(orderBy)
+    else:
+        questions = billingQuestion.objects.filter(Answered = True,).order_by(orderBy)
+    if keyword != "":
+         
+         fil_questions = questions.filter(Q(Title__icontains = keyword)|Q(Content__icontains = keyword))
+         top_questions = wordEmbedSearch(keyword, questions)
+         return render(request, 'showQuestions.html', {'questions':top_questions, 'type': type, 'search_phrase': keyword})
+    else:
+        
+        return render(request,'showQuestions.html', {'questions':questions, 'type': type, 'search_phrase': ''})
 
 def showQuestions(request):
     orderBy = request.GET.get('order_by', 'Date')
     questions = billingQuestion.objects.filter(Answered = True).order_by(orderBy)
-    type = " "
-    return render(request, 'showQuestions.html', {'questions':questions, 'type': type, 'search_phrase': ''})
+    category = request.GET.get('Type')
+    if category:
+        questions = questions.filter(Type = category)
+
+    query = request.GET.get('keyword')
+    if query:
+        questions = wordEmbedSearch(query, questions)
+
+    
+    return render(request, 'showQuestions.html', {'questions':questions, 'type': category, 'search_phrase': query})
 
 def showPDFs(request):
     orderBy = request.GET.get('order_by', 'Category')
     docs = billingPDF.objects.filter().order_by(orderBy)
-    category = " "
+    category = request.GET.get('Category')
+    if category:
+        docs = docs.filter(Category = category)
+    
     return render(request, 'showPDFs.html', {'docs':docs, 'category': category})
 
 
@@ -105,7 +144,7 @@ def wordEmbedSearch(search_phrase, questions):
     question_vectors = [nlp(q).vector for q in questionsC]
     search_vector = nlp(search_phrase).vector
     similarities = [np.dot(search_vector, qv) / (np.linalg.norm(search_vector) * np.linalg.norm(qv)) for qv in question_vectors]
-    n = 4
+    n = 8
     top_indices = np.argsort(similarities)[::-1][:n]
     top_question_ids = [question_ids[i] for i in top_indices if question_ids[i]]
     preserved_order = Case(*[When(id=pk, then=pos) for pos, pk in enumerate(top_question_ids)])
@@ -113,7 +152,18 @@ def wordEmbedSearch(search_phrase, questions):
     print(top_questions)
     return top_questions
 
+def filterType(request):
+    type = request.POST.get('Type')
+    print(type)
+    orderBy = request.GET.get('order_by', 'Date')
+    questions = billingQuestion.objects.filter(Answered = True).order_by(orderBy)
+    if type != "":
+         
+         fil_questions = questions.filter(Type = type).order_by(orderBy)
 
+         return render(request, 'showQuestions.html', {'questions':fil_questions, 'type':type})
+    else:
+        return redirect('showQuestions')
 
 def searchQuestionsAnswered(request, type):
     keyword = request.POST.get('keyword')
@@ -262,6 +312,14 @@ def answerQuestion(request, question_id):
             answer = form.save(commit = False)
             answer.Answered = True
             answer.save()
+            body = 'Your billing question has been answered \n\n Here is the link to the billing questions page http://167.183.14.241:2003/'
+            
+            
+            email = EmailMessage(
+                  'Billing Question Answered ',
+                   body,
+                    settings.EMAIL_HOST_USER,
+                   [question.questionerEmail,'Joshua.Kessler@northside.com'])
 
             
             

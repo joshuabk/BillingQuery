@@ -74,40 +74,43 @@
 
 <h1 class = "text-center  mb-5">Billing Questions</h1>
 
-<div class = search>
-  <form class="form-inline my-2 my-lg-0" action ="{% url 'filterType' %}" method = "POST"  id = 'filter-form'>
-    {% csrf_token %}
-  
+
+  <form class="form my-2 my-lg-0 d-flex flex-column align-items-center" action ="{% url 'showQuestions' %}" method = "GET"  id = 'filter-form'>
+   
+  {% csrf_token %}
+  <div class="search mb-1 w-100" style="max-width: 400px;">
     <select name ='Type'  class="form-control" onchange= "document.getElementById('filter-form').submit();">
       <option value="">Select Category</option>
       <option value="External Beam" {% if type == "External Beam" %}selected{% endif %}>External Beam</option> 
-      <option value="SRS" {% if type == "SRS" %}selected{% endif %}>SRS</option> 
+      <option value="SRS" {% if type == "SRS" %}selected{% endif %}>SRS</option>
+      <option value="Gamma Knife" {% if type == "Gamma Knife" %}selected{% endif %}>Gamma Knife</option>  
       <option value="SBRT" {% if type == "SBRT" %}selected{% endif %}>SBRT</option>
       <option value="HDR" {% if type == "HDR" %}selected{% endif %}>HDR</option>
       <option value="LDR" {% if type == "LDR" %}selected{% endif %}>LDR</option>
       <option value="Total Body" {% if type == "Total Body" %}selected{% endif %}>Total Body</option>
       <option value="Nursing" {% if type == "Nursing" %}selected{% endif %}>Nursing</option>
+      <option value="General" {% if type == "General" %}selected{% endif %}>General</option>
       
     </select>
   
-  </form>
   </div>
 
-<div class = search>
-<form class="form-inline my-2 my-lg-0" action ="{% url 'searchQuestionsAnswered' type %}" method = "POST"  >
+<div class="search d-flex align-items-center w-100" style="max-width: 400px;">
+
   {% csrf_token %}
 
-  <tr>Search<td><input class="form-control mr-sm-2 ml-sm-2" type="text" placeholder=""  name = 'keyword' value='{{search_phrase}}'></td></tr>
+  <tr><td style="font-weight: bold;">Search</td><td><input class="form-control ml-sm-2" type="text" placeholder="" width:500px name = 'keyword' {% if search_phrase %} value="{{search_phrase}}" {% endif %}></td></tr>
 
-  <button class="btn btn-outline-primary my-2 my-sm-0 ml-2 mr-5" type="submit"><i class="fa fa-search"></i></button>
+  <button class="btn btn-outline-primary my-2 my-sm-0 ml-2" type="submit"><i class="fa fa-search"></i></button>
 
+ 
+  </div>
 </form>
-</div>
 
 
 <table border = "1" class = "table ">
-    <thead><th><a href="?order_by=Date">Date</a></th><th><a href="?order_by=Type">Category</a></th><th>Title</th><th>Question</th><th>Answer</th><th>Show</th>{% if user.is_authenticated %}<th>Edit</th> <th>Delete</th>{% endif %}</thead>
-
+    <thead><th><a href="?order_by={% if request.GET.order_by == 'Date' %}-Date{% else %}Date{% endif %}">Date</a></th><th><a href="?order_by=Type">Category</a></th><th>Title</th><th>Question</th><th>Answer</th><th>Show</th>{% if user.is_authenticated %}<th>Edit</th> <th>Delete</th>{% endif %}</thead>
+  
 <tbody>
 {%for question in questions%}
     <tr class="{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">

@@ -74,40 +74,33 @@
 
 <h1 class = "text-center  mb-5">Billing Documents</h1>
 <div class = search>
-  <form class="form-inline my-2 my-lg-0" action ="{% url 'filterDocType' %}" method = "POST"  id = 'filter-form'>
+  <form class="form-inline my-2 my-lg-0" action ="{% url 'showPDFs' %}" method = "GET"  id = 'filter-form'>
     {% csrf_token %}
   
     <select name ='Category'  class="form-control" onchange= "document.getElementById('filter-form').submit();">
       <option value="">Select Category</option>
       <option value="External Beam" {% if category == "External Beam" %}selected{% endif %}>External Beam</option> 
       <option value="SRS" {% if category == "SRS" %}selected{% endif %}>SRS</option> 
+      <option value="Gamma Knife" {% if category == "Gamma Knife" %}selected{% endif %}>Gamma Knife</option> 
       <option value="SBRT" {% if category == "SBRT" %}selected{% endif %}>SBRT</option>
       <option value="HDR" {% if category == "HDR" %}selected{% endif %}>HDR</option>
       <option value="LDR" {% if category == "LDR" %}selected{% endif %}>LDR</option>
       <option value="Total Body" {% if category == "Total Body" %}selected{% endif %}>Total Body</option>
       <option value="Nursing" {% if category == "Nursing" %}selected{% endif %}>Nursing</option>
-      
+      <option value="General" {% if category == "General" %}selected{% endif %}>General</option>
     </select>
   
-  </form>
+ 
   </div>
 
 
 
-<div class = search>
-<form class="form-inline my-2 my-lg-0" action ="{% url 'searchPDFs' category %}" method = "POST"  >
-  {% csrf_token %}
-
-  <tr>Keyword<td><input class="form-control mr-sm-2 ml-sm-2" category="text" placeholder=""  name = 'keyword'></td></tr>
-
-  <button class="btn btn-outline-primary my-2 my-sm-0 ml-2 mr-5" category="submit"><i class="fa fa-search"></i></button>
 
 </form>
-</div>
 
 
 <table border = "1" class = "table ">
-    <thead><th><a href="?order_by=Date">Date</a></th><th><a href="?order_by=Category">Category</a></th><th>Title</th><th>Show</th>{% if user.is_authenticated %}<th>Edit</th> <th>Delete</th>{% endif %}</thead>
+    <thead><th><a href="?order_by={% if request.GET.order_by == 'Date' %}-Date{% else %}Date{% endif %}">Date</a></th><th><a href="?order_by=Category">Category</a></th><th>Title</th><th>Show</th>{% if user.is_authenticated %}<th>Edit</th> <th>Delete</th>{% endif %}</thead>
 
 <tbody>
 {%for doc in docs%}
