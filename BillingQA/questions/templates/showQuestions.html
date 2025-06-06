@@ -3,7 +3,7 @@
 
 
 {% block content%}
-<title>Incident Reports</title>
+<title>Billing QA</title>
 <style>
   .search {
   margin: 0;
@@ -99,7 +99,7 @@
 
   {% csrf_token %}
 
-  <tr><td style="font-weight: bold;">Search</td><td><input class="form-control ml-sm-2" type="text" placeholder="" width:500px name = 'keyword' {% if search_phrase %} value="{{search_phrase}}" {% endif %}></td></tr>
+  <tr><th>Search:</th><td><input class="form-control ml-sm-2" type="text" placeholder="" width:500px name = 'keyword' {% if search_phrase %} value="{{search_phrase}}" {% endif %}></td></tr>
 
   <button class="btn btn-outline-primary my-2 my-sm-0 ml-2" type="submit"><i class="fa fa-search"></i></button>
 

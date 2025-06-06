@@ -45,11 +45,13 @@ def submitQuestion(request):
             body = 'A new billing question has been submitted \n\n Here is the link to the billing questions page http://167.183.14.241:2003/'
             orderBy = request.GET.get('order_by', 'Date')
             questions = billingQuestion.objects.all().order_by(orderBy)
+            print(question.questionerEmail)
+            print("did it show up")
             email = EmailMessage(
                   'New Billing Question',
                    body,
                     settings.EMAIL_HOST_USER,
-                   [question.questionerEmail,'Joshua.Kessler@northside.com'])
+                   [question.questionerEmail])
             
             
             email.send()
@@ -100,7 +102,7 @@ def searchQuestionsAnswered(request, type):
         return render(request,'showQuestions.html', {'questions':questions, 'type': type, 'search_phrase': ''})
 
 def showQuestions(request):
-    orderBy = request.GET.get('order_by', 'Date')
+    orderBy = request.GET.get('order_by', '-Date')
     questions = billingQuestion.objects.filter(Answered = True).order_by(orderBy)
     category = request.GET.get('Type')
     if category:
@@ -235,9 +237,13 @@ def showUnanswered(request):
 
 def deleteQuestion(request, question_id):
     question = billingQuestion.objects.get(pk = question_id)
+    answered = question.Answered
     question.delete()
     requests = billingQuestion.objects.all()
-    return redirect('showQuestions')
+    if answered:
+        return redirect('showQuestions')
+    else:
+        return redirect('showUnanswered')
 
 def deletePDF(request, doc_id):
     doc = billingPDF.objects.get(pk = doc_id)
@@ -319,10 +325,11 @@ def answerQuestion(request, question_id):
                   'Billing Question Answered ',
                    body,
                     settings.EMAIL_HOST_USER,
-                   [question.questionerEmail,'Joshua.Kessler@northside.com'])
+                   [question.questionerEmail])
 
-            
-            
+            print(question.questionerEmail)
+            email.send()
+            print('mail sent')
             return redirect('showUnanswered')
         else:
            

@@ -7,7 +7,7 @@ class questionForm(forms.ModelForm):
 
     class Meta:
         model = billingQuestion
-        fields = [ "Title","Questioner","Type", "Content"]
+        fields = [ "Title","Questioner","Type", "Content", "questionerEmail"]
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

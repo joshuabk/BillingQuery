@@ -2,7 +2,7 @@
 
 
 {% block content%}
-
+<title>Billing QA</title>
 
 <form class="form-inline my-2 my-lg-0" action ="{% url 'submitQuestion' %}" method = "POST"  >
     {% csrf_token %}
@@ -35,7 +35,7 @@
 </table><br>
   
 </div>
-<button class="btn btn-outline-success my-2 my-sm-0 ml-5 mr-5" type="submit">Save</button>
+<button class="btn btn-outline-primary my-2 my-sm-0 ml-5 mr-5" type="submit">Submit</button>
 </div>
 </form>
 
