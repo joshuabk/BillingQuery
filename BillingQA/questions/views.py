@@ -137,12 +137,13 @@ def searchQuestionsUnanswered(request):
          return render(request, 'showUnanswered.html', {'questions':fil_questions})
     else:
         return redirect('showUnanswered')
-
+nlp = spacy.load("en_core_sci_lg")
 def wordEmbedSearch(search_phrase, questions):
-    nlp = spacy.load("en_core_web_lg")
+    
     questionsL = list(questions)
     question_ids = [q.id  for q in questionsL]
-    questionsC = [q.Content for q in questionsL]
+    questionsC = [q.Content + ' ' + q.Title + ' ' + q.Answer for q in questionsL]
+    print(questionsC)
     question_vectors = [nlp(q).vector for q in questionsC]
     search_vector = nlp(search_phrase).vector
     similarities = [np.dot(search_vector, qv) / (np.linalg.norm(search_vector) * np.linalg.norm(qv)) for qv in question_vectors]
@@ -151,7 +152,7 @@ def wordEmbedSearch(search_phrase, questions):
     top_question_ids = [question_ids[i] for i in top_indices if question_ids[i]]
     preserved_order = Case(*[When(id=pk, then=pos) for pos, pk in enumerate(top_question_ids)])
     top_questions = billingQuestion.objects.filter(id__in=top_question_ids).order_by(preserved_order)
-    print(top_questions)
+    
     return top_questions
 
 def filterType(request):
