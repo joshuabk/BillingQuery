@@ -26,9 +26,11 @@ from reportlab.pdfbase.ttfonts import TTFont
 from io import BytesIO
 import os
 import textwrap
+from sentence_transformers import SentenceTransformer
 
 from django.core import mail
 from django.core.mail.backends.smtp import EmailBackend
+from django.db.models import Case, When
 
 # Create your views here.
 #login
@@ -83,6 +85,8 @@ def submitPDF(request):
     else:
 
         return render(request,'submitPDF.html')  
+
+#not used
 def searchQuestionsAnswered(request, type):
     keyword = request.POST.get('keyword')
     
@@ -95,7 +99,7 @@ def searchQuestionsAnswered(request, type):
     if keyword != "":
          
          fil_questions = questions.filter(Q(Title__icontains = keyword)|Q(Content__icontains = keyword))
-         top_questions = wordEmbedSearch(keyword, questions)
+         top_questions = wordEmbedSearch2(keyword, questions)
          return render(request, 'showQuestions.html', {'questions':top_questions, 'type': type, 'search_phrase': keyword})
     else:
         
@@ -110,7 +114,7 @@ def showQuestions(request):
 
     query = request.GET.get('keyword')
     if query:
-        questions = wordEmbedSearch(query, questions)
+        questions = wordEmbedSearch2(query, questions)
 
     
     return render(request, 'showQuestions.html', {'questions':questions, 'type': category, 'search_phrase': query})
@@ -137,13 +141,46 @@ def searchQuestionsUnanswered(request):
          return render(request, 'showUnanswered.html', {'questions':fil_questions})
     else:
         return redirect('showUnanswered')
-nlp = spacy.load("en_core_sci_lg")
+#nlp = spacy.loa`d("en_core_sci_md")
+ST_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+ST_MODEL_NAME2 = "NeuML/pubmedbert-base-embeddings"
+st_model = SentenceTransformer(ST_MODEL_NAME2)  # uses CPU or GPU automatically if available
+
+def sbert_encode(texts):
+    # normalize embeddings to unit length so dot = cosine
+    embs = st_model.encode(texts, batch_size=64, convert_to_numpy=True, normalize_embeddings=True)
+    return embs
+
+def wordEmbedSearch2(search_phrase, questions, top_k=8):
+    questionsL = list(questions)
+    question_ids = [q.id for q in questionsL]
+    corpus_texts = [f"{q.Content} {q.Title} {q.Answer}" for q in questionsL]
+
+    # Encode corpus + query
+    corpus_vecs = sbert_encode(corpus_texts)           # shape: (N, 384)
+    query_vec = sbert_encode([search_phrase])[0]       # shape: (384,)
+
+    # cosine since we normalized (dot product == cosine)
+    sims = corpus_vecs @ query_vec                     # shape: (N,)
+    print("search two has been used")
+    # pick top_k
+    top_idx = np.argpartition(-sims, min(top_k, len(sims)-1))[:top_k]
+    # sort them by score desc
+    top_idx = top_idx[np.argsort(-sims[top_idx])]
+
+    top_ids = [question_ids[i] for i in top_idx if question_ids[i]]
+    if not top_ids:
+        return billingQuestion.objects.none()
+
+    preserved = Case(*[When(id=pk, then=pos) for pos, pk in enumerate(top_ids)])
+    return billingQuestion.objects.filter(id__in=top_ids).order_by(preserved)
+
 def wordEmbedSearch(search_phrase, questions):
     
     questionsL = list(questions)
     question_ids = [q.id  for q in questionsL]
     questionsC = [q.Content + ' ' + q.Title + ' ' + q.Answer for q in questionsL]
-    print(questionsC)
+    print("search one has been used")
     question_vectors = [nlp(q).vector for q in questionsC]
     search_vector = nlp(search_phrase).vector
     similarities = [np.dot(search_vector, qv) / (np.linalg.norm(search_vector) * np.linalg.norm(qv)) for qv in question_vectors]
@@ -167,25 +204,7 @@ def filterType(request):
          return render(request, 'showQuestions.html', {'questions':fil_questions, 'type':type})
     else:
         return redirect('showQuestions')
-
-def searchQuestionsAnswered(request, type):
-    keyword = request.POST.get('keyword')
-    
-    print(keyword)
-    orderBy = request.GET.get('order_by', 'Date')
-    if type != " ":
-        questions = billingQuestion.objects.filter(Answered = True, Type = type).order_by(orderBy)
-    else:
-        questions = billingQuestion.objects.filter(Answered = True,).order_by(orderBy)
-    if keyword != "":
-         
-         fil_questions = questions.filter(Q(Title__icontains = keyword)|Q(Content__icontains = keyword))
-         top_questions = wordEmbedSearch(keyword, questions)
-         return render(request, 'showQuestions.html', {'questions':top_questions, 'type': type, 'search_phrase': keyword})
-    else:
-        
-        return render(request,'showQuestions.html', {'questions':questions, 'type': type, 'search_phrase': ''})
-    
+  
 
 def searchPDFs(request, category):
     keyword = request.POST.get('keyword')
