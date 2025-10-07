@@ -53,9 +53,9 @@ def submitQuestion(request):
                   'New Billing Question',
                    body,
                     settings.EMAIL_HOST_USER,
-                   [question.questionerEmail, 'joshua.kessler@northside.com']#,'Ajaykumar.Patel@northside.com',"Amanda.Dell'aquila@northside.com",
-                   # 'Andrija.Manestar@northside.com',  'Christel.Dunham@northside.com', 'Danielle.Warren@northside.com',
-                   # 'Ellen.Herron@northside.com', 'Sara.Wach@northside.com', 'Tiffany.Armour@northside.com', 'Francinna.Scott-Jones@northside.com'])
+                   [question.questionerEmail, 'joshua.kessler@northside.com','Ajaykumar.Patel@northside.com',"Amanda.Dell'aquila@northside.com",
+                    'Andrija.Manestar@northside.com',  'Christel.Dunham@northside.com', 'Danielle.Warren@northside.com',
+                    'Ellen.Herron@northside.com', 'Sara.Wach@northside.com', 'Tiffany.Armour@northside.com', 'Francinna.Scott-Jones@northside.com'])
             
             
             email.send()
@@ -153,7 +153,7 @@ def sbert_encode(texts):
     embs = st_model.encode(texts, batch_size=64, convert_to_numpy=True, normalize_embeddings=True)
     return embs
 
-def wordEmbedSearch2(search_phrase, questions, top_k=8):
+def wordEmbedSearch2(search_phrase, questions, top_k=12):
     questionsL = list(questions)
     question_ids = [q.id for q in questionsL]
     corpus_texts = [f"{q.Content} {q.Title} {q.Answer}" for q in questionsL]
